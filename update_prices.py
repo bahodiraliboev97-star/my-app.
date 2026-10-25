@@ -3,7 +3,7 @@ import requests
 from TelegramGifts import TelegramGifts
 
 URL = "https://my-app-beta-mocha.vercel.app/api/update-floors"
-secret = open(os.path.expanduser("~/.nft-admin-secret")).read().strip()
+secret = os.environ.get("ADMIN_SECRET") or open(os.path.expanduser("~/.nft-admin-secret")).read().strip()
 
 def slugify(n):
     return re.sub(r"[^a-z0-9]", "", n.replace("\u2019", "'").lower())
