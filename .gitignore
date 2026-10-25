@@ -1,0 +1,8 @@
+.venv/
+.vercel/
+.env*
+*.backup*
+index.backup*.html
+items.sql
+__pycache__/
+.DS_Store

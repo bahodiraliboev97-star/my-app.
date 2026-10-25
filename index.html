@@ -237,14 +237,15 @@ footer{text-align:center;color:#686873;padding:24px;border-top:1px solid var(--l
 @media(max-width:560px){.upgrade-block{padding:13px}.upgrade-comparison{grid-template-columns:1fr}.upgrade-arrow{text-align:center;transform:rotate(90deg)}.upgrade-heading{align-items:flex-start;flex-direction:column}#upSearch{width:100%}}
 
 </style>
-</head>
+<script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/theme.css?v=1"></head>
 <body>
-<header><div class="logo">NFT <span>CASES</span></div><div class="badge">DEMO · 0 ⭐</div></header>
+<header><div class="logo">NFT <span>CASES</span></div><div class="badge" id="userBadge" style="cursor:pointer">👤 <span id="userName">Гость</span> · <span id="userBal">0</span> ⭐ · <span id="userTon">0</span> TON ＋</div></header>
 <nav>
 <button class="navbtn active" data-page="cases">🎁 Кейсы</button>
 <button class="navbtn" data-page="upgrade">💎 Upgrade</button>
 <button class="navbtn" data-page="inventory">🎒 Inventory</button>
 <button class="navbtn" data-page="games">🎮 Игры</button>
+<button class="navbtn" data-page="market" id="marketNavBtn">🛒 Маркет</button>
 </nav>
 <main>
 <section id="cases" class="active">
@@ -263,7 +264,7 @@ footer{text-align:center;color:#686873;padding:24px;border-top:1px solid var(--l
 <div class="s3-focus" id="s3focus"><strong id="s3name"></strong><span id="s3value"></span></div>
 <div class="s3-win" id="spinResult"></div>
 </div>
-<div class="s3-controls"><button class="btn" id="spinBtn" onclick="spin()">КРУТИТЬ КЕЙС</button><div class="notice">Тяни сцену, чтобы покрутить подарки. Демо-режим: реальные NFT не выдаются, Stars не списываются.</div></div>
+<div class="s3-controls"><button class="btn" id="spinBtn" onclick="spin()">КРУТИТЬ КЕЙС</button><div class="notice">Тяни сцену, чтобы покрутить подарки. Игровой режим: призы виртуальные, реальные NFT не выдаются, Stars не списываются.</div></div>
 <div class="panel" style="margin-top:18px"><p id="caseDesc" style="margin-top:0"></p><h3>Возможные подарки</h3><div class="gifts" id="giftGrid"></div></div>
 </section>
 
@@ -363,17 +364,25 @@ footer{text-align:center;color:#686873;padding:24px;border-top:1px solid var(--l
 </section>
 
 <section id="inventory">
-<div class="hero"><div class="eyebrow">YOUR COLLECTION</div><h1>MY <span>INVENTORY</span></h1><p>Здесь отображаются подарки, полученные в демонстрационных кейсах. Это не подключение к реальному Telegram-инвентарю.</p></div>
+<div class="hero"><div class="eyebrow">YOUR COLLECTION</div><h1>MY <span>INVENTORY</span></h1><p>Здесь отображаются подарки, полученные в игровых кейсах. Это не подключение к реальному Telegram-инвентарю.</p></div>
 <div class="sectionhead"><h2>Мои предметы</h2><button class="btn secondary small" onclick="clearInventory()">Очистить демо</button></div>
 <div class="grid" id="inventoryGrid"></div>
 <div class="notice">Чтобы сайт показывал настоящие подарки из Telegram, потребуется отдельная поддерживаемая интеграция. Не вводи здесь пароли или коды Telegram.</div>
 </section>
 <section id="games">
-<div class="hero"><div class="eyebrow">ARCADE · DEMO ONLY</div><h1>GAME <span>ZONE</span></h1><p>Демонстрационные игры без ставок, пополнений и денежных выплат.</p></div>
+<div class="hero"><div class="eyebrow">ARCADE · ИГРОВОЙ РЕЖИМ</div><h1>GAME <span>ZONE</span></h1><p>Игры без ставок и денежных выплат: призы виртуальные.</p></div>
 <div class="gamegrid">
-<div class="panel"><div class="eyebrow">GAME 01</div><h2 style="margin-top:10px">CRASH</h2><p>Запусти визуальный раунд и наблюдай за коэффициентом.</p><div class="crash-stage" id="crashStage"><canvas id="crashCanvas"></canvas><div class="crash-hud"><div class="crash-mult" id="crashDisplay">1.00x</div><div class="crash-label" id="crashLabel">ГОТОВ К ЗАПУСКУ</div></div><div class="crash-flash" id="crashFlash"></div></div><div class="crash-actions"><button class="btn" id="crashBtn" onclick="playCrash()">ЗАПУСТИТЬ ДЕМО</button><button class="btn secondary" id="crashCashBtn" onclick="cashCrash()" disabled>ЗАФИКСИРОВАТЬ</button></div><div class="notice" id="crashStatus">Раунд не запущен</div><h3>История раундов</h3><div class="history" id="crashHistory"></div></div>
+<div class="panel"><div class="eyebrow">GAME 01</div><h2 style="margin-top:10px">CRASH</h2><p>Запусти визуальный раунд и наблюдай за коэффициентом.</p><div class="crash-stage" id="crashStage"><canvas id="crashCanvas"></canvas><div class="crash-hud"><div class="crash-mult" id="crashDisplay">1.00x</div><div class="crash-label" id="crashLabel">ГОТОВ К ЗАПУСКУ</div></div><div class="crash-flash" id="crashFlash"></div></div><div class="crash-actions"><button class="btn" id="crashBtn" onclick="playCrash()">ЗАПУСТИТЬ</button><button class="btn secondary" id="crashCashBtn" onclick="cashCrash()" disabled>ЗАФИКСИРОВАТЬ</button></div><div class="notice" id="crashStatus">Раунд не запущен</div><h3>История раундов</h3><div class="history" id="crashHistory"></div></div>
 <div class="panel"><div class="eyebrow">GAME 02</div><h2 style="margin-top:10px">MINES</h2><p>Выбери количество мин и открывай клетки. Без ставок.</p><label for="mineCount">Количество мин</label><select id="mineCount"><option value="3">3 мины</option><option value="5" selected>5 мин</option><option value="8">8 мин</option><option value="10">10 мин</option><option value="15">15 мин</option><option value="20">20 мин</option></select><div class="mines" id="minesGrid"></div><button class="btn full" onclick="resetMines()">НОВАЯ ИГРА</button><div class="notice" id="minesStatus">Выбери безопасные клетки.</div></div>
 </div>
+</section>
+<section id="market">
+<div class="hero"><div class="eyebrow">MARKETPLACE</div><h1>NFT <span>МАРКЕТ</span></h1><p>Рыночные цены на подарки в TON. Цены обновляются автоматически.</p></div>
+<div class="row" style="gap:10px;margin:14px 0;flex-wrap:wrap">
+<input id="marketSearch" placeholder="Поиск по названию" style="flex:1;min-width:160px;padding:10px;border-radius:8px;border:1px solid #34303a;background:#19191f;color:#fff">
+<select id="marketSort" style="padding:10px;border-radius:8px;border:1px solid #34303a;background:#19191f;color:#fff"><option value="asc">Дешевле</option><option value="desc">Дороже</option><option value="name">По названию</option></select>
+</div>
+<div class="grid" id="marketGrid"></div>
 </section>
 </main>
 <footer>NFT CASES · DEMO INTERFACE · НЕ ЯВЛЯЕТСЯ СИСТЕМОЙ ПРОДАЖИ ИЛИ ВЫДАЧИ NFT</footer>
@@ -459,13 +468,13 @@ const r3={rot:0,vel:0,items:[],step:1,R:340,drag:null,spin:null,idle:0,front:-1,
 function esc3(t){return String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
 function g3dHTML(g,k){const url=imageUrl(g),img=url?`<img src="${url}" alt="${esc3(g.name)}" draggable="false" onerror="this.outerHTML='<div class=g3d-fb>✦</div>'">`:'<div class="g3d-fb">✦</div>';return `<div class="g3d" data-i="${k}" style="--d:${(-k*.53).toFixed(2)}s"><div class="g3d-shadow"></div><div class="g3d-refl">${url?`<img src="${url}" alt="" draggable="false" onerror="this.remove()">`:""}</div><div class="g3d-float">${img}</div></div>`}
 function ringLayout(){const st=document.getElementById("stage3d"),w=st.clientWidth||900,n=r3.items.length,gs=Math.round(Math.min(190,Math.max(110,w*.2)));st.style.setProperty("--gs",gs+"px");r3.R=Math.max(gs*1.05,Math.min(w*.38,gs*n/4.2+120))}
-function openCase(i){selectedCase=cases[i];document.getElementById("caseName").textContent=selectedCase.name;document.getElementById("caseDesc").textContent=selectedCase.desc;document.getElementById("casePrice").textContent=selectedCase.price+" ⭐ · ДЕМО";document.getElementById("giftGrid").innerHTML=selectedCase.items.map((n,k)=>{const g=gift(n);const info=rewardInfo(g.name);return `<div class="gift" onclick="ringFocus(${k})">${artHTML(g)}<strong>${info.label}</strong><div class="muted">${info.value}</div></div>`}).join("");r3.items=selectedCase.items.map(gift);r3.step=Math.PI*2/r3.items.length;r3.rot=0;r3.vel=0;r3.spin=null;r3.front=-1;r3.auto=true;const ring=document.getElementById("ring3d");ring.innerHTML=r3.items.map(g3dHTML).join("");r3.els=[...ring.children];document.getElementById("spinResult").style.display="none";document.getElementById("s3focus").style.opacity=1;const btn=document.getElementById("spinBtn");btn.disabled=false;btn.textContent="КРУТИТЬ КЕЙС";spinning=false;page("detail");requestAnimationFrame(ringLayout)}
+function openCase(i){selectedCase=cases[i];document.getElementById("caseName").textContent=selectedCase.name;document.getElementById("caseDesc").textContent=selectedCase.desc;document.getElementById("casePrice").textContent=selectedCase.price+" ⭐ · виртуальный кейс";document.getElementById("giftGrid").innerHTML=selectedCase.items.map((n,k)=>{const g=gift(n);const info=rewardInfo(g.name);return `<div class="gift" onclick="ringFocus(${k})">${artHTML(g)}<strong>${info.label}</strong><div class="muted">${info.value}</div></div>`}).join("");r3.items=selectedCase.items.map(gift);r3.step=Math.PI*2/r3.items.length;r3.rot=0;r3.vel=0;r3.spin=null;r3.front=-1;r3.auto=true;const ring=document.getElementById("ring3d");ring.innerHTML=r3.items.map(g3dHTML).join("");r3.els=[...ring.children];document.getElementById("spinResult").style.display="none";document.getElementById("s3focus").style.opacity=1;const btn=document.getElementById("spinBtn");btn.disabled=false;btn.textContent="КРУТИТЬ КЕЙС";spinning=false;page("detail");requestAnimationFrame(ringLayout)}
 function ringNorm(a){a%=Math.PI*2;if(a>Math.PI)a-=Math.PI*2;if(a<-Math.PI)a+=Math.PI*2;return a}
 function ringTween(to,ms,ease,done){r3.spin={from:r3.rot,to,t0:performance.now(),ms,ease,done};r3.vel=0}
 function ringFocus(k){if(spinning)return;clearWin3d();r3.auto=false;r3.idle=performance.now();ringTween(r3.rot+ringNorm(-k*r3.step-r3.rot),700,t=>1-Math.pow(1-t,3))}
 function ringStep(d){if(spinning)return;const cur=Math.round(-r3.rot/r3.step);ringFocus(((cur+d)%r3.items.length+r3.items.length)%r3.items.length)}
 function clearWin3d(){(r3.els||[]).forEach(e=>e.classList.remove("win"));document.getElementById("spinResult").style.display="none";document.getElementById("s3focus").style.opacity=1}
-function spin(){if(spinning||!r3.items.length)return;spinning=true;clearWin3d();const btn=document.getElementById("spinBtn"),st=document.getElementById("stage3d");btn.disabled=true;btn.textContent="КРУТИТСЯ...";st.classList.add("spinning");const w=Math.floor(Math.random()*r3.items.length),winner=r3.items[w];let to=-w*r3.step+(Math.random()-.5)*r3.step*.1;const turns=5+Math.floor(Math.random()*2);while(to>r3.rot-turns*Math.PI*2)to-=Math.PI*2;ringTween(to,6000,t=>t<1?1-Math.pow(1-t,4)-Math.sin(t*Math.PI)*.012:1,()=>{ringTween(-w*r3.step+Math.round((r3.rot+w*r3.step)/(Math.PI*2))*Math.PI*2,500,t=>1-Math.pow(1-t,3),null);st.classList.remove("spinning");r3.els[w].classList.add("win");confetti3d();const info=rewardInfo(winner.name),res=document.getElementById("spinResult");res.innerHTML=`<div class="eyebrow">ВЫПАЛО · ДЕМО</div><strong>${esc3(info.label)}</strong><div class="muted" style="margin:0">${esc3(info.value||"Добавлено в инвентарь")}</div>`;res.style.display="block";document.getElementById("s3focus").style.opacity=0;inventory.push(winner);renderInventory();btn.disabled=false;btn.textContent="КРУТИТЬ ЕЩЁ";spinning=false;r3.auto=false;r3.idle=performance.now()+4000})}
+function spin(){if(spinning||!r3.items.length)return;spinning=true;clearWin3d();const btn=document.getElementById("spinBtn"),st=document.getElementById("stage3d");btn.disabled=true;btn.textContent="КРУТИТСЯ...";st.classList.add("spinning");const w=Math.floor(Math.random()*r3.items.length),winner=r3.items[w];let to=-w*r3.step+(Math.random()-.5)*r3.step*.1;const turns=5+Math.floor(Math.random()*2);while(to>r3.rot-turns*Math.PI*2)to-=Math.PI*2;ringTween(to,6000,t=>t<1?1-Math.pow(1-t,4)-Math.sin(t*Math.PI)*.012:1,()=>{ringTween(-w*r3.step+Math.round((r3.rot+w*r3.step)/(Math.PI*2))*Math.PI*2,500,t=>1-Math.pow(1-t,3),null);st.classList.remove("spinning");r3.els[w].classList.add("win");confetti3d();const info=rewardInfo(winner.name),res=document.getElementById("spinResult");res.innerHTML=`<div class="eyebrow">ВЫПАЛО · ВИРТУАЛЬНО</div><strong>${esc3(info.label)}</strong><div class="muted" style="margin:0">${esc3(info.value||"Добавлено в инвентарь")}</div>`;res.style.display="block";document.getElementById("s3focus").style.opacity=0;inventory.push(winner);renderInventory();btn.disabled=false;btn.textContent="КРУТИТЬ ЕЩЁ";spinning=false;r3.auto=false;r3.idle=performance.now()+4000})}
 function confetti3d(){const st=document.getElementById("stage3d"),cols=["#f0c66d","#ffe5a0","#66e0aa","#ff777e","#ffffff"];for(let k=0;k<70;k++){const c=document.createElement("i");c.className="confetti";const a=Math.random()*Math.PI*2,d=120+Math.random()*260;c.style.cssText=`background:${cols[k%5]};--x:${Math.cos(a)*d}px;--y:${Math.sin(a)*d*.7+80}px;--r:${Math.random()*720-360}deg;animation-delay:${Math.random()*.15}s;border-radius:${k%3?2:6}px`;st.appendChild(c);setTimeout(()=>c.remove(),1900)}}
 function ringLoop(now){requestAnimationFrame(ringLoop);if(!r3.els||!document.getElementById("detail").classList.contains("active"))return;
 if(r3.spin){const s=r3.spin,t=Math.min(1,(now-s.t0)/s.ms);r3.rot=s.from+(s.to-s.from)*s.ease(t);if(t>=1){r3.spin=null;s.done&&s.done()}}
@@ -483,7 +492,7 @@ function renderInventory(){
   if(!inventory.length){
     el.innerHTML='<div class="inventoryempty" style="grid-column:1/-1">Пока пусто. Открой демонстрационный кейс.</div>';
   } else {
-    el.innerHTML=inventory.map(g=>`<div class="card">${artHTML(g)}<div class="cardtitle">${g.name}</div><div class="muted">Демо-предмет</div><button class="btn full" onclick="page('upgrade')">ПЕРЕЙТИ К АПГРЕЙДУ</button></div>`).join("");
+    el.innerHTML=inventory.map(g=>`<div class="card">${artHTML(g)}<div class="cardtitle">${g.name}</div><div class="muted">Виртуальный предмет</div><button class="btn full" onclick="page('upgrade')">ПЕРЕЙТИ К АПГРЕЙДУ</button></div>`).join("");
   }
 
   if(typeof window._rerenderUpInventory==="function"){
@@ -495,15 +504,15 @@ function renderUpgrade(){document.getElementById("upgradeGrid").innerHTML=gifts.
 function chooseTarget(n){target=gift(n);updateUpgrade()}
 function chooseSource(n){source=gift(n);updateUpgrade()}
 function updateUpgrade(){document.getElementById("sourceArt").innerHTML=source?artHTML(source):'<span class="symbol">?</span>';document.getElementById("targetArt").innerHTML=target?artHTML(target):'<span class="symbol">?</span>';document.getElementById("sourceName").textContent=source?source.name:"Выбери подарок ниже";document.getElementById("targetName").textContent=target?target.name:"Выбери цель ниже";let p=source&&target?Math.max(3,Math.min(85,Math.round(100/(1+gifts.indexOf(target)*.6)))):0;document.getElementById("probText").textContent=p?p+"%":"—";document.getElementById("probBar").style.width=p+"%"}
-function runUpgrade(){let s=document.getElementById("upgradeStatus");if(!source||!target){s.textContent="Сначала выбери исходный и целевой подарок.";return}s.textContent="Проверяем демо-апгрейд...";setTimeout(()=>{let ok=Math.random()<parseInt(document.getElementById("probText").textContent)/100;s.textContent=ok?"Демо-успех! Получен предмет: "+target.name+". Реальный NFT не выдаётся.":"Демо-апгрейд не прошёл. Реальный NFT не затронут.";if(ok)inventory.push(target);renderInventory()},900)}
+function runUpgrade(){let s=document.getElementById("upgradeStatus");if(!source||!target){s.textContent="Сначала выбери исходный и целевой подарок.";return}s.textContent="Проверяем апгрейд...";setTimeout(()=>{let ok=Math.random()<parseInt(document.getElementById("probText").textContent)/100;s.textContent=ok?"Успех! Получен предмет: "+target.name+". Реальный NFT не выдаётся.":"Демо-апгрейд не прошёл. Реальный NFT не затронут.";if(ok)inventory.push(target);renderInventory()},900)}
 const crash={state:"idle",m:1,point:1,t0:0,cash:null,pts:[],stars:[],parts:[],raf:0,last:0,w:0,h:0};
 function crashSize(){const c=document.getElementById("crashCanvas"),r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;if(!r.width)return;c.width=r.width*d;c.height=r.height*d;crash.w=r.width;crash.h=r.height;c.getContext("2d").setTransform(d,0,0,d,0,0);if(!crash.stars.length)crash.stars=Array.from({length:60},()=>({x:Math.random(),y:Math.random(),z:Math.random()*.8+.2}))}
 function crashUI(cls,label,mult){const st=document.getElementById("crashStage");st.classList.remove("counting","flying","cashed","crashed");if(cls)cls.split(" ").forEach(c=>c&&st.classList.add(c));void st.offsetWidth;if(label!=null)document.getElementById("crashLabel").textContent=label;if(mult!=null)document.getElementById("crashDisplay").textContent=mult}
 function crashPos(m,el){const w=crash.w,h=crash.h,pad=26,span=Math.max(8,el*1.15),top=Math.max(2,crash.m*1.2);return[pad+(el/span)*(w-pad*2),h-pad-((m-1)/(top-1))*(h-pad*2.4)]}
-function playCrash(){if(crash.state==="count"||crash.state==="fly")return;crashSize();const r=Math.random();crash.point=Math.min(60,Math.max(1,Math.floor(97/(1-r))/100));crash.m=1;crash.cash=null;crash.pts=[];crash.parts=[];crash.tip=[26,crash.h-26];document.getElementById("crashBtn").disabled=true;document.getElementById("crashCashBtn").disabled=true;document.getElementById("crashStatus").textContent="Демо-раунд стартует...";crash.state="count";crash.t0=performance.now();let n=3;crashUI("counting","ОБРАТНЫЙ ОТСЧЁТ",n);const iv=setInterval(()=>{n--;if(n>0){crashUI("counting",null,n);return}clearInterval(iv);crash.state="fly";crash.t0=performance.now();crashUI("flying","ПОЛЁТ","1.00x");document.getElementById("crashCashBtn").disabled=false;document.getElementById("crashStatus").textContent="Ракета летит! Зафиксируй коэффициент до взрыва."},1000);cancelAnimationFrame(crash.raf);crash.last=performance.now();crash.raf=requestAnimationFrame(crashLoop)}
-function cashCrash(){if(crash.state!=="fly"||crash.cash)return;crash.cash=crash.m;document.getElementById("crashCashBtn").disabled=true;crashUI("flying cashed","ЗАФИКСИРОВАНО "+crash.m.toFixed(2)+"x",null);document.getElementById("crashStatus").textContent="Демо-фиксация на "+crash.m.toFixed(2)+"x — смотрим, когда ракета взорвётся.";for(let k=0;k<26;k++)crashBurst(crash.tip,"#66e0aa",3)}
+function playCrash(){if(crash.state==="count"||crash.state==="fly")return;crashSize();const r=Math.random();crash.point=Math.min(60,Math.max(1,Math.floor(97/(1-r))/100));crash.m=1;crash.cash=null;crash.pts=[];crash.parts=[];crash.tip=[26,crash.h-26];document.getElementById("crashBtn").disabled=true;document.getElementById("crashCashBtn").disabled=true;document.getElementById("crashStatus").textContent="Раунд стартует...";crash.state="count";crash.t0=performance.now();let n=3;crashUI("counting","ОБРАТНЫЙ ОТСЧЁТ",n);const iv=setInterval(()=>{n--;if(n>0){crashUI("counting",null,n);return}clearInterval(iv);crash.state="fly";crash.t0=performance.now();crashUI("flying","ПОЛЁТ","1.00x");document.getElementById("crashCashBtn").disabled=false;document.getElementById("crashStatus").textContent="Ракета летит! Зафиксируй коэффициент до взрыва."},1000);cancelAnimationFrame(crash.raf);crash.last=performance.now();crash.raf=requestAnimationFrame(crashLoop)}
+function cashCrash(){if(crash.state!=="fly"||crash.cash)return;crash.cash=crash.m;document.getElementById("crashCashBtn").disabled=true;crashUI("flying cashed","ЗАФИКСИРОВАНО "+crash.m.toFixed(2)+"x",null);document.getElementById("crashStatus").textContent="Фиксация на "+crash.m.toFixed(2)+"x — смотрим, когда ракета взорвётся.";for(let k=0;k<26;k++)crashBurst(crash.tip,"#66e0aa",3)}
 function crashBurst(p,color,speed){if(!p)return;const a=Math.random()*Math.PI*2,v=Math.random()*speed+.5;crash.parts.push({x:p[0],y:p[1],vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,color,size:Math.random()*3+1.5})}
-function crashEnd(){crash.state="crashed";document.getElementById("crashCashBtn").disabled=true;const p=crash.tip;for(let k=0;k<90;k++)crashBurst(p,["#ff777e","#ffb36b","#f0c66d","#ffffff"][k%4],6);const v=crash.point.toFixed(2)+"x";crashUI("crashed",crash.cash?"ВЗРЫВ · ТЫ УСПЕЛ НА "+crash.cash.toFixed(2)+"x":"ВЗРЫВ",v);document.getElementById("crashStatus").textContent=crash.cash?"Успел! Демо-фиксация на "+crash.cash.toFixed(2)+"x. Выигрышей нет — это демо.":"Ракета взорвалась на "+v+". Демонстрация без выигрышей.";const pill=document.createElement("span");pill.className="pill "+(crash.point<2?"low":crash.point<10?"mid":"high");pill.textContent=v;const h=document.getElementById("crashHistory");h.prepend(pill);while(h.children.length>8)h.lastChild.remove();setTimeout(()=>{document.getElementById("crashBtn").disabled=false;document.getElementById("crashBtn").textContent="ЕЩЁ РАУНД";crash.state="idle"},1400)}
+function crashEnd(){crash.state="crashed";document.getElementById("crashCashBtn").disabled=true;const p=crash.tip;for(let k=0;k<90;k++)crashBurst(p,["#ff777e","#ffb36b","#f0c66d","#ffffff"][k%4],6);const v=crash.point.toFixed(2)+"x";crashUI("crashed",crash.cash?"ВЗРЫВ · ТЫ УСПЕЛ НА "+crash.cash.toFixed(2)+"x":"ВЗРЫВ",v);document.getElementById("crashStatus").textContent=crash.cash?"Успел! Фиксация на "+crash.cash.toFixed(2)+"x. Выигрышей нет — это демо.":"Ракета взорвалась на "+v+". Демонстрация без выигрышей.";const pill=document.createElement("span");pill.className="pill "+(crash.point<2?"low":crash.point<10?"mid":"high");pill.textContent=v;const h=document.getElementById("crashHistory");h.prepend(pill);while(h.children.length>8)h.lastChild.remove();setTimeout(()=>{document.getElementById("crashBtn").disabled=false;document.getElementById("crashBtn").textContent="ЕЩЁ РАУНД";crash.state="idle"},1400)}
 function crashLoop(now){const dt=Math.min(50,now-crash.last)/16.67;crash.last=now;const c=document.getElementById("crashCanvas"),x=c.getContext("2d"),w=crash.w,h=crash.h;let el=0;if(crash.state==="fly"){el=(now-crash.t0)/1000;crash.m=Math.exp(.13*el);if(crash.m>=crash.point){crash.m=crash.point}document.getElementById("crashDisplay").textContent=crash.m.toFixed(2)+"x";crash.pts.push([el,crash.m]);if(crash.m>=crash.point)crashEnd()}
 const speed=crash.state==="fly"?1+crash.m*.4:.15;x.clearRect(0,0,w,h);
 crash.stars.forEach(s=>{s.x-=.0012*s.z*speed*dt;s.y+=.0006*s.z*speed*dt;if(s.x<0)s.x+=1;if(s.y>1)s.y-=1;x.fillStyle="rgba(245,244,240,"+(s.z*.6)+")";x.fillRect(s.x*w,s.y*h,s.z*2,s.z*2)});
@@ -893,6 +902,118 @@ renderCases();renderInventory();renderUpgrade();resetMines();
 </script>
 
 <script async src="/.netlify/scripts/ar" data-netlify-deploy-id="6ad8a07ff8463af625161475" data-netlify-site-id="f6adaf71-3971-432a-83b7-fd6936e91b10" data-agent-runner-id="6ad89e833539a82d2a487f09"></script>
-</body>
+<script>
+try {
+  const tg = window.Telegram && Telegram.WebApp;
+  if (tg) {
+    tg.ready(); tg.expand();
+    const u = tg.initDataUnsafe && tg.initDataUnsafe.user;
+    if (u) document.getElementById('userName').textContent = u.first_name || u.username || 'Гость';
+  }
+  document.getElementById('userBadge').addEventListener('click', function () {
+    window.openTopup && window.openTopup();
+  });
+} catch (e) { console.error(e); }
+</script>
+<script>
+(function () {
+  const tg = window.Telegram && Telegram.WebApp;
+  if (!tg) return;
+  async function post(url, body) {
+    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    return r.json();
+  }
+  async function refresh() {
+    try {
+      const d = await post("/api/balance", { initData: tg.initData });
+      if (typeof d.balance === "number") document.getElementById("userBal").textContent = d.balance;
+    } catch (e) {}
+  }
+  window.openTopup = function () {
+    tg.showPopup({
+      title: "Пополнение",
+      message: "Выбери сумму в Telegram Stars",
+      buttons: [
+        { id: "1", type: "default", text: "1 ⭐ (тест)" },
+        { id: "50", type: "default", text: "50 ⭐" },
+        { id: "100", type: "default", text: "100 ⭐" }
+      ]
+    }, async function (id) {
+      if (!id) return;
+      try {
+        const d = await post("/api/create-invoice", { initData: tg.initData, amount: Number(id) });
+        if (!d.link) return tg.showAlert("Не удалось создать счёт");
+        tg.openInvoice(d.link, function (status) {
+          if (status === "paid") setTimeout(refresh, 1500);
+        });
+      } catch (e) { tg.showAlert("Ошибка сети"); }
+    });
+  };
+  refresh();
+})();
+</script>
+<script>
+(function () {
+  const tg = window.Telegram && Telegram.WebApp;
+  if (!tg) return;
+  async function post(url, body) {
+    const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    return r.json();
+  }
+  async function refresh() {
+    try {
+      const d = await post("/api/balance", { initData: tg.initData });
+      if (typeof d.balance === "number") document.getElementById("userBal").textContent = d.balance;
+    } catch (e) {}
+  }
+  window.openTopup = function () {
+    if (document.getElementById("topupBox")) return;
+    const box = document.createElement("div");
+    box.id = "topupBox";
+    box.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:9999";
+    box.innerHTML = '<div style="background:#1b1b24;color:#fff;padding:20px;border-radius:16px;width:280px;font-family:sans-serif">'
+      + '<div style="font-size:18px;margin-bottom:12px">Пополнение в ⭐</div>'
+      + '<input id="topupAmt" type="number" min="1" max="10000" inputmode="numeric" placeholder="Сумма" style="width:100%;padding:10px;border-radius:8px;border:0;font-size:16px;box-sizing:border-box">'
+      + '<button id="topupGo" style="width:100%;margin-top:12px;padding:12px;border:0;border-radius:8px;font-size:16px;background:#f5a623;color:#000">Оплатить</button>'
+      + '<button id="topupX" style="width:100%;margin-top:8px;padding:10px;border:0;border-radius:8px;background:transparent;color:#aaa">Отмена</button></div>';
+    document.body.appendChild(box);
+    const close = () => box.remove();
+    document.getElementById("topupX").onclick = close;
+    document.getElementById("topupGo").onclick = async function () {
+      const amount = parseInt(document.getElementById("topupAmt").value, 10);
+      if (!Number.isInteger(amount) || amount < 1 || amount > 10000) return tg.showAlert("Введи целое число от 1 до 10000");
+      try {
+        const d = await post("/api/create-invoice", { initData: tg.initData, amount });
+        if (!d.link) return tg.showAlert("Не удалось создать счёт");
+        close();
+        tg.openInvoice(d.link, function (st) { if (st === "paid") setTimeout(refresh, 1500); });
+      } catch (e) { tg.showAlert("Ошибка сети"); }
+    };
+  };
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@2.0.9/dist/tonconnect-ui.min.js"></script>
+<script src="/ton.js?v=2"></script>
+<script src="/market.js?v=2"></script>
+<script>document.getElementById("marketNavBtn").addEventListener("click",function(){try{page("market")}catch(e){}window.loadMarket&&window.loadMarket()});</script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof window.loadMarketItems === "function") {
+            window.loadMarketItems();
+        } else if (typeof window.loadItems === "function") {
+            window.loadItems();
+        } else {
+            // Если функция называлась иначе, принудительно запрашиваем каталог с Vercel
+            fetch('/api/items')
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Каталог NFT успешно подгружен:", data);
+                    if (window.renderMarket) window.renderMarket(data.items || data);
+                }).catch(err => console.error("Ошибка загрузки NFT:", err));
+        }
+    });
+    </script>
+    \n<!-- fix_market_items_load -->\n</body>
 </html>
 <script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="f6adaf71-3971-432a-83b7-fd6936e91b10" data-app-host="app.netlify.com" data-account-tier="free"></script>
