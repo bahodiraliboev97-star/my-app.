@@ -1,0 +1,27 @@
+@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
+html{background:#06080d!important}
+body{background:transparent!important}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(40% 30% at 20% 10%,rgba(90,110,255,.28),transparent 70%),radial-gradient(35% 28% at 85% 20%,rgba(255,77,157,.18),transparent 70%),radial-gradient(40% 30% at 50% 95%,rgba(255,184,77,.14),transparent 70%);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(3%,2%,0) scale(1.08)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes spin{to{--a:360deg}}
+@keyframes bob{50%{transform:translateY(-5px)}}
+@keyframes shine{to{background-position:200% 0}}
+.navbtn.active{box-shadow:0 0 18px rgba(47,140,255,.35)}
+#market .hero h1{font-family:'Unbounded','Manrope',sans-serif!important;font-weight:800!important;font-size:clamp(30px,9vw,52px)!important;letter-spacing:-.03em}
+#market .hero h1 span{background:linear-gradient(90deg,#5aa2ff,#9b7bff,#ff4d9d,#ffb84d,#5aa2ff)!important;background-size:200% 100%!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;animation:shine 6s linear infinite}
+#market .card.t0{--c:#5aa2ff}
+#market .card.t1{--c:#9b7bff}
+#market .card.t2{--c:#ffb84d}
+#market .card.t3{--c:#ff4d9d}
+#market .card{position:relative;isolation:isolate;border:0!important;background:linear-gradient(180deg,#141a26,#0b0f17)!important;animation:rise .5s both;animation-delay:calc(var(--i,0)*35ms)}
+#market .card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:linear-gradient(160deg,var(--c),transparent 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.55;pointer-events:none}
+#market .card.t2::before,#market .card.t3::before{background:conic-gradient(from var(--a),transparent 0 50%,var(--c) 78%,transparent 96%);opacity:1;animation:spin 5s linear infinite}
+#market .card.t3{box-shadow:0 0 26px -8px var(--c)!important}
+#market .art{background:radial-gradient(ellipse 70% 60% at 50% 55%,color-mix(in srgb,var(--c) 38%,transparent),transparent 72%),#0b0f17!important}
+#market .art img{animation:bob 4s ease-in-out infinite;animation-delay:calc(var(--i,0)*-300ms)}
+#market .price{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 30%,transparent),transparent)!important;border:1px solid color-mix(in srgb,var(--c) 40%,transparent)}
+#market .price::before{background:var(--c)!important}
+#market .price .ton{color:var(--c)!important}
+#market .chip.on{background:linear-gradient(90deg,#5aa2ff,#9b7bff)!important;border-color:transparent!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
